@@ -14719,10 +14719,11 @@ body {
      bottom: 3rem;
      right: 1.625rem;
      z-index: 999999;
-     box-shadow: 0 1px 20px 1px #7b7fef;
+     box-shadow: 0 1px 20px 1px #acadc7;
 }
 .buy-now .btn-buy-now:hover {
   box-shadow: none;
+   color: white;
 }
 
 .ui-square,

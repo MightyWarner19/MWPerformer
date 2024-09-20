@@ -1,13 +1,16 @@
 package com.Mighty.Performance.service;
 
+import com.Mighty.Performance.dto.EmployeeDto;
+import com.Mighty.Performance.dto.ProjectDto;
 import com.Mighty.Performance.entity.Project;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProjectService {
-    public String createProject(Project project);
-    public String updateProject(Project project);
-    public String deleteProject(Long id);
-    public Project getProject(Long id);
-    public List<Project> getAllProject();
+    List<ProjectDto> getAllProjects();
+    Optional<ProjectDto> getProjectById(String proId);
+    void saveProject(ProjectDto projectDto);
+    void updateProject(ProjectDto projectDto);
+    void deleteProject(String proId);
 }

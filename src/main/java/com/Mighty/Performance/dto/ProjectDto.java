@@ -1,43 +1,36 @@
-package com.Mighty.Performance.entity;
-
-import jakarta.persistence.*;
-import jakarta.persistence.Id;
+package com.Mighty.Performance.dto;
 
 import java.time.LocalDate;
 
+public class ProjectDto {
 
-@Entity
-@Table(name = "projects")
-public class Project {
-    @Id
     private String proId;
 
-//    @Column(nullable = false, length = 100)
+    //    @Column(nullable = false, length = 100)
     private String proName;
 
-//    @Column(length = 500)
+    //    @Column(length = 500)
     private String proDescription;
 
-//    @Column(nullable = false)
+    //    @Column(nullable = false)
     private LocalDate proStartDate;
 
-//    @Column(nullable = false)
+    //    @Column(nullable = false)
     private LocalDate proEndDate;
 
-//    @Column(nullable = false)
+    //    @Column(nullable = false)
     private  String teamId;
 
     private String proManager;
 
     private String status;
 
-
-    public Project() {
+    public ProjectDto() {
         super();
     }
 
-    public Project(String proId, String proName, String proDescription, LocalDate proStartDate, LocalDate proEndDate, String teamId, String proManager, String status) {
-        super();
+
+    public ProjectDto(String proId, String proName, String proDescription, LocalDate proStartDate, LocalDate proEndDate, String teamId, String proManager, String status) {
         this.proId = proId;
         this.proName = proName;
         this.proDescription = proDescription;

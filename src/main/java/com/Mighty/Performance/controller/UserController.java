@@ -1,8 +1,11 @@
 package com.Mighty.Performance.controller;
 
+import com.Mighty.Performance.dto.EmployeeDto;
+import com.Mighty.Performance.dto.ProjectDto;
 import com.Mighty.Performance.dto.UserDto;
 import com.Mighty.Performance.entity.Employee;
 import com.Mighty.Performance.repository.EmployeeRepository;
+import com.Mighty.Performance.service.ProjectService;
 import com.Mighty.Performance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -26,6 +30,9 @@ public class UserController {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    private ProjectService projectService;
 
 
 
@@ -52,13 +59,27 @@ public class UserController {
         return "user";
     }
 
-    @GetMapping("admin-page")
+    @GetMapping("/admin-page")
     public String adminPage (Model model, Principal principal) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userDetails);
+        model.addAttribute("project", new ProjectDto());
+        model.addAttribute("projects", projectService.getAllProjects());
         return "/sneat-1.0.0/html/index";
     }
 
+
+    @PostMapping("/admin-page")
+    public String addOrUpdateProject(@ModelAttribute ProjectDto projectDto, Model model, Principal principal) {
+       projectService.saveProject(projectDto);
+        return "redirect:/admin-page";
+    }
+
+    @PostMapping("/admin-page/delete")
+    public String deleteProject(@RequestParam("id") String proId) {
+        projectService.deleteProject(proId);  // Implement deletion logic here
+        return "redirect:/admin-page";
+    }
 //    @GetMapping("admin-page/employees")
 //    public String employeePage(Model model, Principal principal) {
 //        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());

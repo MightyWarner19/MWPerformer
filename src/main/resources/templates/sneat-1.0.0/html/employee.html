@@ -203,7 +203,8 @@
                         <!-- User Info -->
                         <li class="nav-item lh-1 me-3">
                             <div class="flex-grow-1">
-                                <span class="fw-semibold d-block" th:text="${#authentication.name}"></span>
+                                <span class="fw-semibold d-block" >[[${user.getFullname()}]]</span>
+<!--                                th:text="${#authentication.name}"-->
                             </div>
                         </li>
 
@@ -224,8 +225,9 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1">
-                                                <span class="fw-semibold d-block" th:text="${#authentication.name}"></span>
+                                                <span class="fw-semibold d-block" >[[${user.getFullname()}]]</span>
                                                 <small class="text-muted">[[${user.getRole()}]]</small>
+                                                <span class="fw-semibold d-block" th:text="${#authentication.name}"></span>
                                             </div>
                                         </div>
                                     </a>

@@ -63,6 +63,32 @@
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script th:src="@{/sneat-1.0.0/assets/js/config.js}"></script>
+
+
+  <!-- Place the first <script> tag in your HTML's <head> -->
+  <script src="https://cdn.tiny.cloud/1/fu5doaid9l9aamsr9s1xniu29x438w6rlbrpya3t3bu86fl0/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+  <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+  <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: [
+        // Core editing features
+        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+        // Your account includes a free trial of TinyMCE premium features
+        // Try the most popular premium features until Oct 3, 2024:
+        'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
+      ],
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+    });
+  </script>
 </head>
 
   <body>
@@ -145,7 +171,7 @@
             <li class="menu-item active">
               <a href="#" th:href="@{admin-page}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div data-i18n="Analytics">Projects/Clients</div>
+                <div data-i18n="Analytics">Projects</div>
               </a>
             </li>
             <li class="menu-item">
@@ -258,6 +284,7 @@
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">[[${user.getFullname()}]]</span>
                             <small class="text-muted">[[${user.getRole()}]]</small>
+                            <span class="fw-semibold d-block" th:text="${#authentication.name}"></span>
                           </div>
                         </div>
                       </a>
@@ -293,33 +320,20 @@
                   <table class="table">
                     <thead>
                     <tr>
-                      <th>Project</th>
-                      <th>Client</th>
-                      <th>Teams</th>
+                      <th>Project ID</th>
+                      <th>Project Name</th>
+                      <th>Project Start Date</th>
+                      <th>Project End Date</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                    <tr>
-                      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Angular Project</strong></td>
-                      <td>Albert Cook</td>
-                      <td>
-                        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/5.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/6.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Christina Parker">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/7.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                        </ul>
-                      </td>
+                    <tr th:each="project : ${projects}">
+                      <td><i class="fab fa-angular fa-lg text-danger"></i> <strong th:text="${project.proId}">Angular Project</strong></td>
+                      <td th:text="${project.proName}">Albert Cook</td>
+                      <td th:text="${project.proStartDate}">Albert Cook</td>
+                      <td th:text="${project.proEndDate}">786767</td>
                       <td><span class="badge bg-label-primary me-1">Active</span></td>
                       <td>
                         <div class="dropdown">
@@ -327,124 +341,25 @@
                             <i class="bx bx-dots-vertical-rounded"></i>
                           </button>
                           <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);">
+                            <!-- Edit button with data-* attributes -->
+                            <a class="dropdown-item" href="javascript:void(0);"
+                               th:attr="data-pro-id=${project.proId},
+                             data-pro-name=${project.proName},
+                             data-pro-startDate=${project.proStartDate},
+                             data-pro-endDate=${project.proEndDate}"
+                               onclick="openEditModalProject(this);">
                               <i class="bx bx-edit-alt me-1"></i> Edit
                             </a>
-                            <a class="dropdown-item" href="javascript:void(0);">
-                              <i class="bx bx-trash me-1"></i> Delete
-                            </a>
+                            <form th:action="@{/admin-page/delete(id=${project.proId})}" method="post" style="display:inline;">
+                              <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this project?');">
+                                <i class="bx bx-trash me-1"></i> Delete
+                              </button>
+                            </form>
                           </div>
                         </div>
                       </td>
                     </tr>
-                    <tr>
-                      <td><i class="fab fa-react fa-lg text-info me-3"></i> <strong>React Project</strong></td>
-                      <td>Barry Hunter</td>
-                      <td>
-                        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/5.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/6.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Christina Parker">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/7.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                        </ul>
-                      </td>
-                      <td><span class="badge bg-label-success me-1">Completed</span></td>
-                      <td>
-                        <div class="dropdown">
-                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);">
-                              <i class="bx bx-edit-alt me-2"></i> Edit
-                            </a>
-                            <a class="dropdown-item" href="javascript:void(0);">
-                              <i class="bx bx-trash me-2"></i> Delete
-                            </a>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><i class="fab fa-vuejs fa-lg text-success me-3"></i> <strong>VueJs Project</strong></td>
-                      <td>Trevor Baker</td>
-                      <td>
-                        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/5.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/6.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Christina Parker">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/7.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                        </ul>
-                      </td>
-                      <td><span class="badge bg-label-info me-1">Scheduled</span></td>
-                      <td>
-                        <div class="dropdown">
-                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);">
-                              <i class="bx bx-edit-alt me-2"></i> Edit
-                            </a>
-                            <a class="dropdown-item" href="javascript:void(0);">
-                              <i class="bx bx-trash me-2"></i> Delete
-                            </a>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><i class="fab fa-bootstrap fa-lg text-primary me-3"></i> <strong>Bootstrap Project</strong></td>
-                      <td>Jerry Milton</td>
-                      <td>
-                        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/5.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/6.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                          <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                              class="avatar avatar-xs pull-up" title="Christina Parker">
-                            <img th:src="@{/sneat-1.0.0/assets/img/avatars/7.png}" alt="Avatar" class="rounded-circle" />
-                          </li>
-                        </ul>
-                      </td>
-                      <td><span class="badge bg-label-warning me-1">Pending</span></td>
-                      <td>
-                        <div class="dropdown">
-                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);">
-                              <i class="bx bx-edit-alt me-2"></i> Edit
-                            </a>
-                            <a class="dropdown-item" href="javascript:void(0);">
-                              <i class="bx bx-trash me-2"></i> Delete
-                            </a>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
+
                     </tbody>
                   </table>
                 </div>
@@ -485,12 +400,100 @@
 
     <div class="buy-now">
       <a
-              href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
               target="_blank"
               class="btn btn-primary btn-buy-now"
-      >add project/client</a
+              data-bs-toggle="modal"
+              data-bs-target="#projectModel"
+      >add project</a
       >
     </div>
+    <div class="modal fade" id="projectModel" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <form id="projectEntry" name="projectEntry" th:action="@{/admin-page}" method="post" th:object="${project}">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Fill Project Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="proName" class="form-label">Project Name</label>
+                  <input type="text" id="proName" name="proName" th:field="*{proName}" class="form-control" placeholder="Enter Project name"/>
+                </div>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col mb-0">
+                  <label for="proId" class="form-label">Project Id</label>
+                  <input type="text" id="proId" name="proId" th:field="*{proId}" class="form-control" placeholder="MWI/2023/HR/R-123"/>
+                </div>
+                <div class="col mb-0">
+                  <label for="teamId" class="form-label">Team Id</label>
+                  <input type="text" id="teamId" name="teamId" th:field="*{teamId}" class="form-control" placeholder="Enter team id"/>
+                </div>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col mb-0">
+                  <label for="proStartDate" class="form-label">Start Date</label>
+                  <input type="date" id="proStartDate" name="proStartDate" th:field="*{proStartDate}" class="form-control"/>
+                </div>
+                <div class="col mb-0">
+                  <label for="proEndDate" class="form-label">End Date</label>
+                  <input type="date" id="proEndDate" name="proEndDate" th:field="*{proEndDate}" class="form-control"/>
+                </div>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col ">
+                  <label for="proManager" class="form-label">Project Manager Name</label>
+                  <input
+                          type="text"
+                          id="proManager"
+                          name="proManager"
+                          th:field="*{proManager}"
+                          class="form-control"
+                          placeholder="Enter project manager name"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label for="proDescription" class="form-label">Project Description</label>
+                  <textarea class="form-control" id="proDescription" name="proDescription" th:field="*{proDescription}"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+
+
+    <!--for edit the form-->
+<script>
+    function openEditModalProject(editButton) {
+    // Get the data from the clicked Edit button
+    const proId = editButton.getAttribute('data-pro-id');
+    const proName = editButton.getAttribute('data-pro-name');
+    const proStartDate = editButton.getAttribute('data-pro-startDate');
+    const proEndDate = editButton.getAttribute('data-pro-endDate');
+
+    // Populate the modal fields with the project data
+    document.getElementById('proId').value = proId;
+    document.getElementById('proName').value = proName;
+    document.getElementById('proStartDate').value = proStartDate;
+    document.getElementById('proEndDate').value = proEndDate;
+
+    // Show the modal
+    var modal = new bootstrap.Modal(document.getElementById('projectModel'));
+    modal.show();
+    }
+</script>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -513,6 +516,7 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
 
   </body>
 </html>
