@@ -35,6 +35,10 @@ public class UserController {
     private ProjectService projectService;
 
 
+    @GetMapping("/")
+    public String mainPage() {
+        return "/sneat-1.0.0/html/pages-misc-error";
+    }
 
     @GetMapping("/login")
     public String login() {
