@@ -2,12 +2,11 @@ package com.Mighty.Performance.controller;
 
 
 import com.Mighty.Performance.dto.EmployeeDto;
-import com.Mighty.Performance.entity.Task;
-import com.Mighty.Performance.response.ResponseHandler;
+import com.Mighty.Performance.dto.ProjectDto;
+import com.Mighty.Performance.dto.TaskDto;
+import com.Mighty.Performance.service.EmployeeService;
 import com.Mighty.Performance.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -15,10 +14,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
-public class TaskAssign {
+public class TaskController {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private TaskService taskService;
+    @Autowired
+    public void EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -27,7 +35,17 @@ public class TaskAssign {
     public String employeePage(Model model, Principal principal) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userDetails);
+        model.addAttribute("employee", new EmployeeDto());
+        model.addAttribute("employees", employeeService.getAllEmployees());
+        model.addAttribute("task", new TaskDto());
+        model.addAttribute("tasks", taskService.getAllTasks());
         return "/sneat-1.0.0/html/tasks";
+    }
+
+    @PostMapping("/admin-page/tasks")
+    public String addOrUpdateTask(@ModelAttribute TaskDto taskDto, Model model, Principal principal) {
+        taskService.saveTask(taskDto);
+        return "redirect:/admin-page/tasks";
     }
 //    TaskService taskService;
 //

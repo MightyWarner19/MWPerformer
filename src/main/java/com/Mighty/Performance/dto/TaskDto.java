@@ -1,37 +1,33 @@
-package com.Mighty.Performance.entity;
+package com.Mighty.Performance.dto;
 
-import jakarta.persistence.*;
+import com.Mighty.Performance.entity.Employee;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "tasks")
-public class Task {
+public class TaskDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long taskId;  // Use Long for generated IDs
 
     private String taskName;
     private String proId;
 
-//    @ManyToOne(fetch = FetchType.LAZY)  // Specify relationship
+    //    @ManyToOne(fetch = FetchType.LAZY)  // Specify relationship
 //    @JoinColumn(name = "empId", nullable = false) // Reference employee_id from Employee entity
-    private String assignEmployee;  // Store Employee object instead of just the email
+
+
+    private String assignEmployee;
 
     private LocalDate taskStartDate;
 
     //    @Column(nullable = false)
     private LocalDate taskEndDate;
     private String taskDescription;
-    // Constructors, getters, setters
 
-
-    public Task() {
+    public TaskDto() {
         super();
     }
 
-    public Task(Long taskId, String taskName, String proId, String assignEmployee, LocalDate taskStartDate, LocalDate taskEndDate, String taskDescription) {
+    public TaskDto(Long taskId, String taskName, String proId, String assignEmployee, LocalDate taskStartDate, LocalDate taskEndDate, String taskDescription) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.proId = proId;

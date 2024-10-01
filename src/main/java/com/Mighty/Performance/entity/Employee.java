@@ -1,12 +1,10 @@
 package com.Mighty.Performance.entity;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table (name="employee_info")
+@Table(name = "employee_info")
 public class Employee {
     @Id
     private String empId;
@@ -17,11 +15,14 @@ public class Employee {
     private String proId;
     private String teamId;
 
+//    @OneToMany(mappedBy = "assignEmployee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Task> tasks;  // One-to-Many relationship with Task
+
     public Employee() {
         super();
     }
 
-    public Employee(String empId, String empName, String empEmail,String empPhone, String empProfile, String proId, String teamId) {
+    public Employee(String empId, String empName, String empEmail, String empPhone, String empProfile, String proId, String teamId) {
         this.empId = empId;
         this.empName = empName;
         this.empEmail = empEmail;
@@ -30,6 +31,19 @@ public class Employee {
         this.proId = proId;
         this.teamId = teamId;
     }
+
+    // Getter and Setter for tasks
+//
+//    public List<Task> getTasks() {
+//        return tasks;
+//    }
+//
+//    public void setTasks(List<Task> tasks) {
+//        this.tasks = tasks;
+//    }
+
+    // Other existing getters and setters...
+
 
     public String getEmpId() {
         return empId;
@@ -55,9 +69,13 @@ public class Employee {
         this.empEmail = empEmail;
     }
 
-    public String getEmpPhone(){return empPhone;}
+    public String getEmpPhone() {
+        return empPhone;
+    }
 
-    public void setEmpPhone(String empPhone){ this.empPhone = empPhone;}
+    public void setEmpPhone(String empPhone) {
+        this.empPhone = empPhone;
+    }
 
     public String getEmpProfile() {
         return empProfile;
