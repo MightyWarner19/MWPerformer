@@ -2,7 +2,9 @@ package com.Mighty.Performance.service.Impl;
 
 import com.Mighty.Performance.dto.EmployeeDto;
 import com.Mighty.Performance.entity.Employee;
+import com.Mighty.Performance.entity.Team;
 import com.Mighty.Performance.repository.EmployeeRepository;
+import com.Mighty.Performance.repository.TeamRepository;
 import com.Mighty.Performance.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +13,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private TeamRepository teamRepository; // Inject TeamRepository
 
     @Override
     public List<EmployeeDto> getAllEmployees() {
@@ -48,8 +52,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.deleteById(empId);
     }
 
-    // Helper methods to convert between DTO and Entity
+    // Convert Employee entity to EmployeeDto
     private EmployeeDto convertEntityToDto(Employee employee) {
+        String teamId = (employee.getTeam() != null) ? employee.getTeam().getTeamId() : null; // Extract teamId from Team object
         return new EmployeeDto(
                 employee.getEmpId(),
                 employee.getEmpName(),
@@ -57,11 +62,13 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employee.getEmpPhone(),
                 employee.getEmpProfile(),
                 employee.getProId(),
-                employee.getTeamId()
+                teamId  // Set the teamId in the DTO
         );
     }
 
+    // Convert EmployeeDto to Employee entity
     private Employee convertDtoToEntity(EmployeeDto employeeDto) {
+        Team team = teamRepository.findByTeamId(employeeDto.getTeamId()).orElse(null); // Fetch Team object by teamId
         return new Employee(
                 employeeDto.getEmpId(),
                 employeeDto.getEmpName(),
@@ -69,7 +76,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeDto.getEmpPhone(),
                 employeeDto.getEmpProfile(),
                 employeeDto.getProId(),
-                employeeDto.getTeamId()
+                team  // Set the fetched Team object in the Employee entity
         );
     }
+
 }

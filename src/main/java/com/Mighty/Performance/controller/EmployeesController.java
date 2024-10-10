@@ -119,12 +119,12 @@ public class EmployeesController {
     @Autowired
     UserDetailsService userDetailsService;
 
-    @GetMapping("admin-page/teams")
-    public String teamPage(Model model, Principal principal) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userDetails);
-        return "/sneat-1.0.0/html/teams";
-    }
+//    @GetMapping("admin-page/teams")
+//    public String teamPage(Model model, Principal principal) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+//        model.addAttribute("user", userDetails);
+//        return "/sneat-1.0.0/html/teams";
+//    }
 
     @GetMapping("admin-page/employees")
     public String employeePage(Model model, Principal principal) {

@@ -1,7 +1,5 @@
 package com.Mighty.Performance.dto;
 
-import java.time.LocalDate;
-
 public class EmployeeDto {
     private String empId;
     private String empName;
@@ -9,24 +7,21 @@ public class EmployeeDto {
     private String empPhone;
     private String empProfile;
     private String proId;
-    private String teamId;
+    private String teamId;  // To store the team ID or any relevant team info
 
     public EmployeeDto() {
         super();
     }
 
-    public EmployeeDto(String empId, String empName, String empEmail,String empPhone, String empProfile, String proId, String teamId) {
-        super();
+    public EmployeeDto(String empId, String empName, String empEmail, String empPhone, String empProfile, String proId, String teamId) {
         this.empId = empId;
         this.empName = empName;
-        this.empPhone=empPhone;
         this.empEmail = empEmail;
+        this.empPhone = empPhone;
         this.empProfile = empProfile;
         this.proId = proId;
         this.teamId = teamId;
     }
-
-
 
     public String getEmpId() {
         return empId;
@@ -52,9 +47,13 @@ public class EmployeeDto {
         this.empEmail = empEmail;
     }
 
-    public String getEmpPhone(){return empPhone;}
+    public String getEmpPhone() {
+        return empPhone;
+    }
 
-    public void setEmpPhone(String empPhone){ this.empPhone = empPhone;}
+    public void setEmpPhone(String empPhone) {
+        this.empPhone = empPhone;
+    }
 
     public String getEmpProfile() {
         return empProfile;
