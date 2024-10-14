@@ -5,6 +5,7 @@ import com.Mighty.Performance.dto.ProjectDto;
 import com.Mighty.Performance.dto.UserDto;
 import com.Mighty.Performance.entity.Employee;
 import com.Mighty.Performance.repository.EmployeeRepository;
+import com.Mighty.Performance.service.EmployeeService;
 import com.Mighty.Performance.service.ProjectService;
 import com.Mighty.Performance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -33,6 +32,9 @@ public class UserController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
 
     @GetMapping("/")
@@ -56,12 +58,35 @@ public class UserController {
         model.addAttribute("message", "Registered Successfuly!");
         return "/sneat-1.0.0/html/auth-register-basic";
     }
-    @GetMapping("user-page")
-    public String userPage (Model model, Principal principal) {
+//    @GetMapping("/admin-page/employees/profile")
+//    public String userPage (Model model, Principal principal) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+//        model.addAttribute("user", userDetails);
+//        return "/sneat-1.0.0/html/profile";
+//    }
+
+    @GetMapping("/admin-page/employees/profile/{empId}")
+    public String getEmployeeProfile(@PathVariable("empId") String empId, Model model, Principal principal) {
+        // Load authenticated user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userDetails);
-        return "user";
+
+        empId = empId.replace("-", "/");
+        // Fetch employee details by empId
+        Optional<EmployeeDto> employee = employeeService.getEmployeeById(empId);
+
+        // Check if employee exists
+        if (employee.isPresent()) {
+            model.addAttribute("employee", employee.get());
+        } else {
+            // Handle the case where the employee isn't found
+            return "error/404"; // Display a 404 page or return another error view
+        }
+
+        // Return the correct Thymeleaf template
+        return "sneat-1.0.0/html/profile";
     }
+
 
     @GetMapping("/admin-page")
     public String adminPage (Model model, Principal principal) {

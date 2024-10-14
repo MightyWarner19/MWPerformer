@@ -286,20 +286,18 @@
                                 </thead>
                                 <tbody class="table-border-bottom-0">
                                 <tr th:each="employee : ${employees}">
-                                    <td ><strong th:text="${employee.empId}">MW3498489</strong></td>
+                                    <td>
+                                        <!-- Wrap employee ID with an anchor tag for redirection -->
+                                        <a th:href="@{/admin-page/employees/profile/{empId}(empId=${#strings.replace(employee.empId, '/', '-')})}">
+                                            <strong th:text="${employee.empId}">MWI/2024/RT/100</strong>
+                                        </a>
+
+                                    </td>
                                     <td th:text="${employee.empName}">Albert Cook</td>
-                                    <td th:text="${employee.empEmail}">
-                                        Rahul@mightywarner.com
-                                    </td>
-                                    <td th:text="${employee.empPhone}">
-                                        737837878
-                                    </td>
-                                    <td th:text="${employee.empProfile}">
-                                       Backend Developer
-                                    </td>
-                                    <td th:text="${employee.proId}">
-                                        73783
-                                    </td>
+                                    <td th:text="${employee.empEmail}">Rahul@mightywarner.com</td>
+                                    <td th:text="${employee.empPhone}">737837878</td>
+                                    <td th:text="${employee.empProfile}">Backend Developer</td>
+                                    <td th:text="${employee.proId}">73783</td>
                                     <td><span class="badge bg-label-primary me-1" th:text="${employee.teamId}">Active34</span></td>
                                     <td>
                                         <div class="dropdown">
@@ -310,9 +308,9 @@
                                                 <!-- Edit button with data-* attributes -->
                                                 <a class="dropdown-item" href="javascript:void(0);"
                                                    th:attr="data-emp-id=${employee.empId}, data-emp-name=${employee.empName},
-                        data-emp-email=${employee.empEmail}, data-emp-phone=${employee.empPhone},
-                        data-emp-profile=${employee.empProfile}, data-pro-id=${employee.proId},
-                        data-team-id=${employee.teamId}"
+                    data-emp-email=${employee.empEmail}, data-emp-phone=${employee.empPhone},
+                    data-emp-profile=${employee.empProfile}, data-pro-id=${employee.proId},
+                    data-team-id=${employee.teamId}"
                                                    onclick="openEditModal(this);">
                                                     <i class="bx bx-edit-alt me-1"></i> Edit
                                                 </a>
@@ -325,6 +323,7 @@
                                         </div>
                                     </td>
                                 </tr>
+
                                 </tbody>
                             </table>
                         </div>
