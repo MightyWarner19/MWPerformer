@@ -65,7 +65,7 @@ public class UserController {
 //        return "/sneat-1.0.0/html/profile";
 //    }
 
-    @GetMapping("/admin-page/employees/profile/{empId}")
+    @GetMapping("/admin-page/employees/{empId}")
     public String getEmployeeProfile(@PathVariable("empId") String empId, Model model, Principal principal) {
         // Load authenticated user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());

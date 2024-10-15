@@ -288,7 +288,7 @@
                                 <tr th:each="employee : ${employees}">
                                     <td>
                                         <!-- Wrap employee ID with an anchor tag for redirection -->
-                                        <a th:href="@{/admin-page/employees/profile/{empId}(empId=${#strings.replace(employee.empId, '/', '-')})}">
+                                        <a th:href="@{/admin-page/employees/{empId}(empId=${#strings.replace(employee.empId, '/', '-')})}">
                                             <strong th:text="${employee.empId}">MWI/2024/RT/100</strong>
                                         </a>
 
