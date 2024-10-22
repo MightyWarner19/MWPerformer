@@ -1,13 +1,17 @@
 package com.Mighty.Performance.dto;
 
 public class EmployeeDto {
+
     private String empId;
     private String empName;
     private String empEmail;
     private String empPhone;
     private String empProfile;
     private String proId;
-    private String teamId;  // To store the team ID or any relevant team info
+    private String teamId;  // Assuming teamId is of type String
+
+    // Getters and Setters
+
 
     public EmployeeDto() {
         super();

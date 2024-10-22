@@ -1,33 +1,22 @@
 package com.Mighty.Performance.dto;
 
-import com.Mighty.Performance.entity.Employee;
-
 import java.time.LocalDate;
 
 public class TaskDto {
 
-    private Long taskId;  // Use Long for generated IDs
-
+    private Long taskId;
     private String taskName;
     private String proId;
-
-    //    @ManyToOne(fetch = FetchType.LAZY)  // Specify relationship
-//    @JoinColumn(name = "empId", nullable = false) // Reference employee_id from Employee entity
-
-
-    private String assignEmployee;
-
+    private String assignEmployee;  // The employee email instead of the entire Employee object
     private LocalDate taskStartDate;
-
-    //    @Column(nullable = false)
     private LocalDate taskEndDate;
     private String taskDescription;
+    private String taskStatus;  // New field to store task status
 
-    public TaskDto() {
-        super();
-    }
+    // Constructors
+    public TaskDto() {}
 
-    public TaskDto(Long taskId, String taskName, String proId, String assignEmployee, LocalDate taskStartDate, LocalDate taskEndDate, String taskDescription) {
+    public TaskDto(Long taskId, String taskName, String proId, String assignEmployee, LocalDate taskStartDate, LocalDate taskEndDate, String taskDescription, String taskStatus) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.proId = proId;
@@ -35,8 +24,10 @@ public class TaskDto {
         this.taskStartDate = taskStartDate;
         this.taskEndDate = taskEndDate;
         this.taskDescription = taskDescription;
+        this.taskStatus = taskStatus;
     }
 
+    // Getters and Setters
     public Long getTaskId() {
         return taskId;
     }
@@ -92,4 +83,15 @@ public class TaskDto {
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription;
     }
+
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    // ToString method for debugging and logging purposes
+
 }

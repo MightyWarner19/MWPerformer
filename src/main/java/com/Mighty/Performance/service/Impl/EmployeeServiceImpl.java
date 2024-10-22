@@ -3,6 +3,7 @@ package com.Mighty.Performance.service.Impl;
 import com.Mighty.Performance.dto.EmployeeDto;
 import com.Mighty.Performance.entity.Employee;
 import com.Mighty.Performance.entity.Team;
+import com.Mighty.Performance.exception.TeamNotFoundException;  // Assuming you have this custom exception
 import com.Mighty.Performance.repository.EmployeeRepository;
 import com.Mighty.Performance.repository.TeamRepository;
 import com.Mighty.Performance.service.EmployeeService;
@@ -43,6 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void updateEmployee(EmployeeDto employeeDto) {
+        // Fetch the team entity from teamId
         Employee employee = convertDtoToEntity(employeeDto);
         employeeRepository.save(employee);
     }
@@ -79,5 +81,5 @@ public class EmployeeServiceImpl implements EmployeeService {
                 team  // Set the fetched Team object in the Employee entity
         );
     }
-
 }
+

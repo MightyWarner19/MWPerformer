@@ -5,16 +5,20 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "employee_info")
 public class Employee {
+
     @Id
     private String empId;
     private String empName;
+
+    @Column(unique = true, nullable = false)
     private String empEmail;
+
     private String empPhone;
     private String empProfile;
-    private String proId;
+    private String proId;  // Represents the project this employee is working on
 
     // Linking the Employee to the Team using @ManyToOne
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)  // Fetch lazily to avoid unnecessary data loading
     @JoinColumn(name = "teamId")
     private Team team;
 
@@ -32,6 +36,7 @@ public class Employee {
         this.team = team;
     }
 
+    // Getters and Setters
     public String getEmpId() {
         return empId;
     }

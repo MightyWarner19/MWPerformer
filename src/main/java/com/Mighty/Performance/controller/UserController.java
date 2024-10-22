@@ -41,15 +41,14 @@ public class UserController {
     public String mainPage() {
         return "/sneat-1.0.0/html/pages-misc-error";
     }
-
-    @GetMapping("/login")
-    public String login() {
-        return "/sneat-1.0.0/html/auth-login-basic";
+    @RequestMapping(value="/login", method=RequestMethod.GET)
+    public String loadForm() {
+        return "sneat-1.0.0/html/auth-login-basic";
     }
 
     @GetMapping("/registration")
     public String getRegistrationPage(@ModelAttribute("user") UserDto userDto) {
-        return "/sneat-1.0.0/html/auth-register-basic";
+        return "sneat-1.0.0/html/auth-register-basic";
     }
 
     @PostMapping("/registration")
@@ -65,27 +64,7 @@ public class UserController {
 //        return "/sneat-1.0.0/html/profile";
 //    }
 
-    @GetMapping("/admin-page/employees/{empId}")
-    public String getEmployeeProfile(@PathVariable("empId") String empId, Model model, Principal principal) {
-        // Load authenticated user details
-        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userDetails);
 
-        empId = empId.replace("-", "/");
-        // Fetch employee details by empId
-        Optional<EmployeeDto> employee = employeeService.getEmployeeById(empId);
-
-        // Check if employee exists
-        if (employee.isPresent()) {
-            model.addAttribute("employee", employee.get());
-        } else {
-            // Handle the case where the employee isn't found
-            return "error/404"; // Display a 404 page or return another error view
-        }
-
-        // Return the correct Thymeleaf template
-        return "sneat-1.0.0/html/profile";
-    }
 
 
     @GetMapping("/admin-page")

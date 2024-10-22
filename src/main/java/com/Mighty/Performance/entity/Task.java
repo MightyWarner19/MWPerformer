@@ -15,23 +15,25 @@ public class Task {
     private String taskName;
     private String proId;
 
-//    @ManyToOne(fetch = FetchType.LAZY)  // Specify relationship
-//    @JoinColumn(name = "empId", nullable = false) // Reference employee_id from Employee entity
-    private String assignEmployee;  // Store Employee object instead of just the email
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "empId", nullable = false) // Reference employee_id from Employee entity
+    private Employee assignEmployee;  // Store Employee object instead of just email
 
     private LocalDate taskStartDate;
 
-    //    @Column(nullable = false)
     private LocalDate taskEndDate;
-    private String taskDescription;
-    // Constructors, getters, setters
 
+    private String taskDescription;
+
+    private String taskStatus;  // New field to store task status set by employee
+
+    // Constructors, getters, setters
 
     public Task() {
         super();
     }
 
-    public Task(Long taskId, String taskName, String proId, String assignEmployee, LocalDate taskStartDate, LocalDate taskEndDate, String taskDescription) {
+    public Task(Long taskId, String taskName, String proId, Employee assignEmployee, LocalDate taskStartDate, LocalDate taskEndDate, String taskDescription, String taskStatus) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.proId = proId;
@@ -39,6 +41,7 @@ public class Task {
         this.taskStartDate = taskStartDate;
         this.taskEndDate = taskEndDate;
         this.taskDescription = taskDescription;
+        this.taskStatus = taskStatus;
     }
 
     public Long getTaskId() {
@@ -65,11 +68,11 @@ public class Task {
         this.proId = proId;
     }
 
-    public String getAssignEmployee() {
+    public Employee getAssignEmployee() {
         return assignEmployee;
     }
 
-    public void setAssignEmployee(String assignEmployee) {
+    public void setAssignEmployee(Employee assignEmployee) {
         this.assignEmployee = assignEmployee;
     }
 
@@ -95,5 +98,13 @@ public class Task {
 
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription;
+    }
+
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
     }
 }

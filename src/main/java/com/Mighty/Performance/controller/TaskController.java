@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class TaskController {
@@ -32,7 +34,7 @@ public class TaskController {
     UserDetailsService userDetailsService;
 
     @GetMapping("admin-page/tasks")
-    public String employeePage(Model model, Principal principal) {
+    public String taskPage(Model model, Principal principal) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userDetails);
         model.addAttribute("employee", new EmployeeDto());
@@ -47,6 +49,74 @@ public class TaskController {
         taskService.saveTask(taskDto);
         return "redirect:/admin-page/tasks";
     }
+
+
+    @GetMapping("/admin-page/employees/{empId}")
+    public String getEmployeeProfile(
+            @PathVariable("empId") String empId,
+            Model model,
+            Principal principal) {
+
+        // Load authenticated user details
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        model.addAttribute("user", userDetails);
+
+        // Replace "-" with "/" if needed
+        empId = empId.replace("-", "/");
+
+        // Fetch employee details using empId
+        Optional<EmployeeDto> employee = employeeService.getEmployeeById(empId);
+        if (employee.isEmpty()) {
+            return "error/404";  // Handle missing employee
+        }
+
+        // Get the employee's email
+        String empEmail = employee.get().getEmpEmail();
+
+        // Fetch tasks associated with this employee's email
+        List<TaskDto> tasks = taskService.getTasksByEmployeeEmail(empEmail);
+
+        // Add employee and tasks to the model
+        model.addAttribute("employee", employee.get());
+        model.addAttribute("tasks", tasks);
+
+        // Return the profile view
+        return "sneat-1.0.0/html/profile";
+    }
+
+    @GetMapping("/admin-page/employees/{empId}/performance")
+    public String getEmployeePerformance(
+            @PathVariable("empId") String empId,
+            Model model,
+            Principal principal) {
+
+        // Load authenticated user details
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        model.addAttribute("user", userDetails);
+
+        // Replace "-" with "/" if needed
+        empId = empId.replace("-", "/");
+
+        // Fetch employee details using empId
+        Optional<EmployeeDto> employee = employeeService.getEmployeeById(empId);
+        if (employee.isEmpty()) {
+            return "error/404";  // Handle missing employee
+        }
+
+        // Get the employee's email
+        String empEmail = employee.get().getEmpEmail();
+
+        // Fetch tasks associated with this employee's email
+        List<TaskDto> tasks = taskService.getTasksByEmployeeEmail(empEmail);
+
+        // Add employee and tasks to the model
+        model.addAttribute("employee", employee.get());
+        model.addAttribute("tasks", tasks);
+
+        // Return the profile view
+        return "sneat-1.0.0/html/performance";
+    }
+
 //    TaskService taskService;
 //
 //    public TaskAssign(TaskService taskService) {
