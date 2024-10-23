@@ -41,9 +41,9 @@ public class UserController {
     public String mainPage() {
         return "/sneat-1.0.0/html/pages-misc-error";
     }
-    @RequestMapping(value="/login", method=RequestMethod.GET)
+    @RequestMapping("/login")
     public String loadForm() {
-        return "sneat-1.0.0/html/auth-login-basic";
+        return "sneat-1.0.0/html/login";
     }
 
     @GetMapping("/registration")

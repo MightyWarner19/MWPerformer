@@ -45,6 +45,7 @@
 </head>
 
 <body>
+
 <!-- Content -->
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
@@ -118,6 +119,21 @@
 
                     <h4 class="mb-2">Welcome👋</h4>
                     <p class="mb-4">Please sign in to your account and start the adventure</p>
+
+                    <!-- Success message -->
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            Invalid Credential
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+
+                    <div th:if="${param.logout}">
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            Logout Successfully
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
 
                     <form id="formAuthentication" class="mb-3" th:action="@{/login}" method="POST">
                         <div class="mb-3">
