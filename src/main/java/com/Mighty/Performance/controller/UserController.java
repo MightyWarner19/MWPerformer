@@ -106,4 +106,6 @@ public class UserController {
 //        model.addAttribute("employee", new Employee());// Reload the page to show the updated list of items
 //        return "/sneat-1.0.0/html/employee";
 //    }
+
+
 }
