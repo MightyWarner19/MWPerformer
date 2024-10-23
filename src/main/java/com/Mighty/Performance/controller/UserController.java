@@ -55,7 +55,7 @@ public class UserController {
     public String saveUser(@ModelAttribute("user") UserDto userDto, Model model) {
         userService.save(userDto);
         model.addAttribute("message", "Registered Successfuly!");
-        return "/sneat-1.0.0/html/auth-register-basic";
+        return "sneat-1.0.0/html/auth-register-basic";
     }
 //    @GetMapping("/admin-page/employees/profile")
 //    public String userPage (Model model, Principal principal) {
@@ -73,7 +73,7 @@ public class UserController {
         model.addAttribute("user", userDetails);
         model.addAttribute("project", new ProjectDto());
         model.addAttribute("projects", projectService.getAllProjects());
-        return "/sneat-1.0.0/html/index";
+        return "sneat-1.0.0/html/index";
     }
 
 
