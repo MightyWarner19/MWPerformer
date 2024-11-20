@@ -45,7 +45,7 @@ public class TeamController {
 //        System.out.println("Employees Data: " + employees); // Debugging output
         model.addAttribute("employees", employees);
 
-        return "/sneat-1.0.0/html/teams";  // Ensure this path matches the actual template location
+        return "sneat-1.0.0/html/teams";  // Ensure this path matches the actual template location
     }
 
     // Add or update a team
@@ -58,7 +58,7 @@ public class TeamController {
             teamService.saveTeam(teamDto);
         } catch (Exception e) {
             model.addAttribute("error", "Error saving the team: " + e.getMessage());
-            return "/sneat-1.0.0/html/teams";  // Return to the same page if there's an error
+            return "sneat-1.0.0/html/teams";  // Return to the same page if there's an error
         }
         return "redirect:/admin-page/teams";  // Redirect on successful operation
     }
@@ -70,7 +70,7 @@ public class TeamController {
             teamService.deleteTeam(teamId);
         } catch (Exception e) {
             model.addAttribute("error", "Error deleting the team: " + e.getMessage());
-            return "/sneat-1.0.0/html/teams";  // Return to the same page if there's an error
+            return "sneat-1.0.0/html/teams";  // Return to the same page if there's an error
         }
         return "redirect:/admin-page/teams";  // Redirect after successful deletion
     }

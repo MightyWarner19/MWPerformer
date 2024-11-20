@@ -39,12 +39,13 @@ public class UserController {
 
     @GetMapping("/")
     public String mainPage() {
-        return "/sneat-1.0.0/html/pages-misc-error";
+        return "sneat-1.0.0/html/pages-misc-error";
     }
     @RequestMapping("/login")
     public String loadForm() {
         return "sneat-1.0.0/html/login";
     }
+
 
     @GetMapping("/registration")
     public String getRegistrationPage(@ModelAttribute("user") UserDto userDto) {
@@ -106,6 +107,4 @@ public class UserController {
 //        model.addAttribute("employee", new Employee());// Reload the page to show the updated list of items
 //        return "/sneat-1.0.0/html/employee";
 //    }
-
-
 }

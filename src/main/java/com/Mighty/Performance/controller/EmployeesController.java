@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -126,12 +127,13 @@ public class EmployeesController {
         model.addAttribute("user", userDetails);
         model.addAttribute("employee", new EmployeeDto());
         model.addAttribute("employees", employeeService.getAllEmployees());
-        return "/sneat-1.0.0/html/employee";
+        return "sneat-1.0.0/html/employee";
     }
 
     @PostMapping("admin-page/employees")
-    public String addOrUpdateEmployee(@ModelAttribute EmployeeDto employeeDto, Model model, Principal principal) {
+    public String addOrUpdateEmployee(@ModelAttribute EmployeeDto employeeDto, Model model, Principal principal, RedirectAttributes redirectAttributes) {
         employeeService.saveEmployee(employeeDto);
+        redirectAttributes.addFlashAttribute("successMessage", "Employee added successfully!");
         return "redirect:/admin-page/employees";
     }
 

@@ -33,7 +33,7 @@ public class TaskController {
     @Autowired
     UserDetailsService userDetailsService;
 
-    @GetMapping("admin-page/tasks")
+    @GetMapping("/admin-page/tasks")
     public String taskPage(Model model, Principal principal) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userDetails);
@@ -41,7 +41,7 @@ public class TaskController {
         model.addAttribute("employees", employeeService.getAllEmployees());
         model.addAttribute("task", new TaskDto());
         model.addAttribute("tasks", taskService.getAllTasks());
-        return "/sneat-1.0.0/html/tasks";
+        return "sneat-1.0.0/html/tasks";
     }
 
     @PostMapping("/admin-page/tasks")
@@ -50,6 +50,11 @@ public class TaskController {
         return "redirect:/admin-page/tasks";
     }
 
+    @PostMapping("/admin-page/tasks/delete")
+    public String deleteTask(@RequestParam("id") Long taskId) {
+        taskService.deleteTask(taskId);  // Implement deletion logic here
+        return "redirect:/admin-page/tasks";
+    }
 
     @GetMapping("/admin-page/employees/{empId}")
     public String getEmployeeProfile(
